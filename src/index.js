@@ -112,8 +112,6 @@ Notifier.defaultProps = {
 /**
  *      Store
  **/
-
-
 class NotificationStore extends Flux.DashStore{
     constructor(){
         super();
