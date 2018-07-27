@@ -11,21 +11,24 @@ const add = (type, message, confirm=null, timout=6000) =>{
     
     let state = store.getState('notifications');
     if(!state) state = [];
-    let notyId = Math.floor(Math.random() * 100000000000);
-    let notifications = state.concat([{
-        id: notyId,
+    let notification = {
+        id: Math.floor(Math.random() * 100000000000),
         msg: message,
         type: type,
         onConfirm: confirm,
-        timout: timout
-    }]);
+        timout: timout,
+        remove: () => remove(notification.id)
+    };
+    let notifications = state.concat([notification]);
     
     Flux.dispatchEvent("notifications", notifications);
     
     if(!timout) timout = 99999999999999999;
     setTimeout(() => {
-        remove(notyId);
+        remove(notification.id);
     },timout);
+    
+    return notification;
 };
 
 const success = (msg, conf, timout=6000) => add('success', msg, conf, timout);

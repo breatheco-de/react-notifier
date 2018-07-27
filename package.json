@@ -1,6 +1,6 @@
 {
   "name": "@breathecode/react-notifier",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Notify the user for success/error or any other messages within the app",
   "main": "dist/notifier.js",
   "scripts": {
