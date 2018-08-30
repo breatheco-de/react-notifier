@@ -27,10 +27,10 @@ Notify.error("Hey! There is an error");
 Notify.success("Everything is cool my brother");
 ```
 
-## Customize notification
+## Customize the component for notification
 
-2) Call the Notify function from anywhere else
-```js
+1) Create the component
+```jsx
     
     const ModalComponent = ({ onConfirm }) => 
         <div>
@@ -38,7 +38,9 @@ Notify.success("Everything is cool my brother");
             <button onClick={()=>onConfirm(true)}>Yes</button>
             <button onClick={()=>onConfirm(false)}>No</button>
         </div>;
-
+```
+2) Call the Notify function from anywhere else (passing the component
+```jsx
     /**
      * @param1: Wrapper css class 
      * @param2: Component to render it
