@@ -20,10 +20,10 @@ ReactDOM.render(
 2) Call the Notify function from anywhere else
 ```js
 
-//notify for error
+//notify for error, it will automatically close after 2 seconds
 Notify.error("Hey! There is an error");
 
-//notify for success
+//notify for success, it will automatically close after 2 seconds
 Notify.success("Everything is cool my brother");
 ```
 
