@@ -11,7 +11,7 @@ $ npm i --save @breathecode/react-notifier
 ## How to use it
 
 1) Add the Notifier tag anywhere in your web app
-```js
+```jsx
 ReactDOM.render(
     <Notifier />,
     document.querySelector('#root')
