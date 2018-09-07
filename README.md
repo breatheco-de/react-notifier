@@ -12,6 +12,7 @@ $ npm i --save @breathecode/react-notifier
 
 1) Add the Notifier tag anywhere in your web app
 ```jsx
+import {Notifier, Notify} from '@breathecode/react-notifier';
 ReactDOM.render(
     <Notifier />,
     document.querySelector('#root')
@@ -19,6 +20,7 @@ ReactDOM.render(
 ```
 2) Call the Notify function from anywhere else
 ```js
+import {Notifier, Notify} from '@breathecode/react-notifier';
 
 //notify for error, it will automatically close after 2 seconds
 Notify.error("Hey! There is an error");
