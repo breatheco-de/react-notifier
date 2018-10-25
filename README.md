@@ -5,7 +5,7 @@ React component for notifications on the fron end.
 ## Installation
 
 ```
-$ npm i --save @breathecode/react-notifier
+$ npm i --save bc-react-notifier
 ```
 
 ## How to use it
@@ -20,12 +20,17 @@ ReactDOM.render(
 ```
 2) Call the Notify function from anywhere else
 ```js
-import {Notifier, Notify} from '@breathecode/react-notifier';
+import {Notifier, Notify} from 'bc-react-notifier';
 
-//notify for error, it will automatically close after 2 seconds
+//Pass the error string or array, auto closes on 2 sec
 Notify.error("Hey! There is an error");
 
-//notify for success, it will automatically close after 2 seconds
+//you can also pass a confirmation callback
+Notify.error("Hey! Are you sure?", () => {
+    //this functions runs on confirmation
+});
+
+//Pass the successs string or array, auto closes in 2 sec
 Notify.success("Everything is cool my brother");
 ```
 

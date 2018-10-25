@@ -1,16 +1,22 @@
 import React from 'react';
-import Flux from '@4geeksacademy/react-flux-dash';
+import EventEmitter from 'events';
 import PropTypes from 'prop-types';
+import { Dispatcher } from 'flux';
+const dispatcher = new Dispatcher();
+const NOTIFICATIONS_EVENT = "bc-react-notifier";
 
 const remove = (id) =>{
-    let notifications = store.getState('notifications').filter(noti => noti.id != id);
-    Flux.dispatchEvent("notifications", notifications);
+    let notifications = store.getNotifications().filter(noti => noti.id != id);
+    dispatcher.dispatch(notifications);
 };
 
 const add = (type, message, confirm=null, timout=6000) =>{
     
-    let state = store.getState('notifications');
+    let state = store.getNotifications();
     if(!state) state = [];
+    if(typeof message == 'string') message = [message];
+    else if(!Array.isArray(message)) throw new Error('The notification message can only be array or string');
+    
     let notification = {
         id: Math.floor(Math.random() * 100000000000),
         msg: message,
@@ -21,7 +27,7 @@ const add = (type, message, confirm=null, timout=6000) =>{
     };
     let notifications = state.concat([notification]);
     
-    Flux.dispatchEvent("notifications", notifications);
+    dispatcher.dispatch(notifications);
     
     if(!timout) timout = 99999999999999999;
     setTimeout(() => {
@@ -34,7 +40,7 @@ const add = (type, message, confirm=null, timout=6000) =>{
 const success = (msg, conf, timout=6000) => add('success', msg, conf, timout);
 const error = (msg, conf, timout=6000) => add('error', msg, conf, timout);
 const info = (msg, conf, timout=6000) => add('info', msg, conf, timout);
-const clean = () => Flux.dispatchEvent("notifications", []);
+const clean = () => dispatcher.dispatch([]);
 
 export const Notify = {success, error, info, clean, add, remove};
 
@@ -50,8 +56,8 @@ let Message = (props) => {
                 height: (confirm) ? 'inherit' : '0'
             }}
         >
-            { (typeof Msg !== 'string') ? <Msg onConfirm={props.noti.onConfirm} /> : props.noti.msg }
-            { (props.confirm && typeof Msg === 'string') ? 
+            { (!Array.isArray(Msg)) ? <Msg onConfirm={props.noti.onConfirm} /> : props.noti.msg.map((msg,i) => (<p key={i} className="noti m-0">{msg}</p>)) }
+            { (props.confirm && Array.isArray(Msg)) ? 
                 (<p>
                     <button className="btn btn-light" onClick={() => props.noti.onConfirm(false)}>Cancel</button>
                     <button className="btn btn-success ml-2" onClick={() => props.noti.onConfirm(true)}>Confirm</button>
@@ -84,7 +90,7 @@ export class Notifier extends React.Component{
     }
     
     componentDidMount(){
-        this.notiSubs = store.subscribe("notifications", 
+        this.notiSubs = store.on(NOTIFICATIONS_EVENT, 
             (notifications) => this.setState({ notifications })
         );
     }
@@ -104,8 +110,6 @@ export class Notifier extends React.Component{
     }
 }
 Notifier.propTypes = {
-  // You can declare that a prop is a specific JS primitive. By default, these
-  // are all optional.
   className: PropTypes.string
 };
 Notifier.defaultProps = {
@@ -115,22 +119,18 @@ Notifier.defaultProps = {
 /**
  *      Store
  **/
-class NotificationStore extends Flux.DashStore{
+class NotificationStore extends EventEmitter{
     constructor(){
         super();
-        this.state = {
-            notifications: []
-        };
-        this.addEvent("notifications", this._notificationsTransformer.bind(this));
+        this.notifications = [];
+        dispatcher.register((notifications) => {
+            this.notifications = notifications;
+            this.emit(NOTIFICATIONS_EVENT, this.notifications);
+        });
     }
     
-    _notificationsTransformer(notifications){
-        if(Array.isArray(notifications)) return notifications;
-        else return [];
-    }
-    
-    getAllNotifications(){
-        return this.state.notifications;
+    getNotifications(){
+        return this.notifications;
     }
 }
 const store = new NotificationStore();
