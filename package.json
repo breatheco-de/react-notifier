@@ -1,6 +1,6 @@
 {
   "name": "bc-react-notifier",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Notify the user for success/error or any other messages within the app",
   "main": "dist/notifier.js",
   "scripts": {

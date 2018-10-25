@@ -15,7 +15,6 @@ const add = (type, message, confirm=null, timout=6000) =>{
     let state = store.getNotifications();
     if(!state) state = [];
     if(typeof message == 'string') message = [message];
-    else if(!Array.isArray(message)) throw new Error('The notification message can only be array or string');
     
     let notification = {
         id: Math.floor(Math.random() * 100000000000),
