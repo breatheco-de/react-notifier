@@ -86,16 +86,15 @@ export class Notifier extends React.Component{
           warning: 'alert-warning'
         }
       };
+      this.notificationsUpdated = (notifications) => this.setState({ notifications });
     }
     
     componentDidMount(){
-        this.notiSubs = store.on(NOTIFICATIONS_EVENT, 
-            (notifications) => this.setState({ notifications })
-        );
+        store.on(NOTIFICATIONS_EVENT, this.notificationsUpdated);
     }
     
     componentWillUnmount(){
-      this.notiSubs.unsubscribe();
+        store.removeListener(NOTIFICATIONS_EVENT, this.notificationsUpdated);
     }
     
     render(){
