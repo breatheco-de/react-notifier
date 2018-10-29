@@ -49,8 +49,9 @@ export const Notify = {success, error, info, clean, add, remove};
 
 let Message = (props) => { 
     const Msg = props.noti.msg;
+    const confirmClass = (props.confirm) ? ' withconfirm':'';
     return (
-        <li className={'alert '+props.typeClass}
+        <li className={'alert '+props.typeClass+confirmClass}
             style={{
                 height: (confirm) ? 'inherit' : '0'
             }}
@@ -103,8 +104,8 @@ export class Notifier extends React.Component{
           if(typeof noti.onConfirm === 'function') return <Message key={i} noti={noti} confirm={true} typeClass={this.state.typeClasses[noti.type]} />;
           return (<Message key={i} noti={noti} confirm={false} typeClass={this.state.typeClasses[noti.type]} />);
         });
-        
-        return(<ul className={"bcnotifier "+this.props.className}>{notifications}</ul>);
+        const activeClass = (notifications.length>0) ? ' active':'';
+        return(<ul className={"bcnotifier "+this.props.className+activeClass}>{notifications}</ul>);
     }
 }
 Notifier.propTypes = {
